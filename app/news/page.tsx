@@ -1,8 +1,8 @@
 import ArticleList from "@/components/article-list";
-import getNews from "@/lib/news";
+import getAllNews from "@/lib/news";
 
 export default async function NewsList() {
-  const articles = await getNews();
+  const articles = await getAllNews();
 
   return (
     <main className="m-8">
