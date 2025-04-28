@@ -1,15 +1,12 @@
-import { NEWS_ARTICLES } from "@/types/news-articles";
-import { getLatestArticles } from "@/lib/utility";
+import ArticleList from "@/components/article-list";
+import { getLatestNews } from "@/lib/news";
 
-export default function Latest() {
+export default async function Latest() {
+  const latestNews = await getLatestNews();
   return (
     <section className="m-8">
       <h2 className="text-2xl font-semibold mb-4">Latest</h2>
-      <ul>
-        {getLatestArticles(NEWS_ARTICLES).map((article) => (
-          <li key={article.id}>{article.title}</li>
-        ))}
-      </ul>
+      <ArticleList articles={latestNews} />
     </section>
   );
 }

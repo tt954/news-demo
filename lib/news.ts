@@ -48,3 +48,15 @@ export async function getUniqueMonths(year: number) {
     throw new Error(`Failed to fetch unique months for year ${year}`);
   }
 }
+
+export async function getLatestNews(limit: number = 5) {
+  try {
+    const articles = await prisma.article.findMany({
+      orderBy: { date: "desc" },
+      take: limit,
+    });
+    return articles;
+  } catch (error) {
+    throw new Error("Failed to fetch the latest news articles");
+  }
+}
