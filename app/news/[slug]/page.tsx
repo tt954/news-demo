@@ -1,5 +1,4 @@
-import { NEWS_ARTICLES } from '@/types/news-articles';
-import { Article as ArticleType } from '@/types/types';
+import { getNewsBySlug } from "@/lib/news";
 
 export default async function Article({
   params,
@@ -7,14 +6,13 @@ export default async function Article({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const article = NEWS_ARTICLES.find(
-    (article) => article.id === parseInt(slug)
-  ) as ArticleType;
+  const article = await getNewsBySlug(slug);
 
   return (
-    <article>
-      <h1>{article.title}</h1>
-      <p>{article.text}</p>
+    <article className="mx-8 leading-relaxed">
+      <h2 className="text-2xl font-bold mb-2">{article.title}</h2>
+      <p className="text-sm text-gray-500 mb-5">{article.date.toString()}</p>
+      <p className="text-base text-gray-800">{article.text}</p>
     </article>
   );
 }

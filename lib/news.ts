@@ -14,6 +14,20 @@ export default async function getAllNews() {
   }
 }
 
+export async function getNewsBySlug(slug: string) {
+  try {
+    const article = await prisma.article.findUnique({
+      where: { slug },
+    });
+    if (!article) {
+      throw new Error(`This article is no longer available`);
+    }
+    return article;
+  } catch (error) {
+    throw new Error(`Failed to fetch news article with slug: ${slug}`);
+  }
+}
+
 export async function getUniqueYears() {
   try {
     const articles = await prisma.article.findMany({
