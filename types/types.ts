@@ -3,6 +3,6 @@ export interface Article {
   slug: string;
   title: string;
   image: string;
-  date: string;
+  date: Date;
   text: string;
 }

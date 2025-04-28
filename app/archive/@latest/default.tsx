@@ -1,5 +1,5 @@
-import { NEWS_ARTICLES } from '@/types/news-articles';
-import { getLatestArticles } from '@/libs/utility';
+import { NEWS_ARTICLES } from "@/types/news-articles";
+import { getLatestArticles } from "@/lib/utility";
 
 export default function Latest() {
   return (
