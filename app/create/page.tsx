@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/components/button";
 import { createArticle } from "@/lib/actions";
 import { useActionState } from "react";
 
@@ -65,13 +66,7 @@ export default function AddArticleForm() {
         {typeof error?.message === "string" && (
           <p className="text-red-500">{error.message}</p>
         )}
-        <button
-          type="submit"
-          disabled={isPending}
-          className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-        >
-          Create post
-        </button>
+        <Button type="submit">Create post</Button>
         {isPending && <p>Creating post...</p>}
       </form>
     </section>
