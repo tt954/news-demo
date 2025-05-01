@@ -1,58 +1,40 @@
 "use client";
 
+import Button from "@/components/button";
+import Input from "@/components/input";
 import { createArticle } from "@/lib/actions";
 import { useActionState } from "react";
 
+const formInitialState = { message: "" };
+
 export default function AddArticleForm() {
-  const [error, formAction, isPending] = useActionState(createArticle, {});
+  const [error, formAction, isPending] = useActionState(
+    createArticle,
+    formInitialState
+  );
 
   return (
     <section className="mx-8">
       <h1 className="text-3xl font-bold mb-4">Write a new article</h1>
       <form className="space-y-6" action={formAction}>
-        <div className="form-control">
-          <label
-            htmlFor="title"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Title
-          </label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            className="mt-1 bg-white w-full rounded-sm border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-          />
-        </div>
-        <div className="form-control">
-          <label
-            htmlFor="image"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Image
-          </label>
-          <input
-            type="file"
-            id="image"
-            name="image"
-            accept="image/png, image/jpeg"
-            className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100"
-          />
-        </div>
-        <div className="form-control">
-          <label
-            htmlFor="content"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Content
-          </label>
-          <textarea
-            id="content"
-            name="content"
-            rows={5}
-            className="mt-1 bg-white w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-          />
-        </div>
+        <Input
+          name="title"
+          className="w-full bg-white rounded-sm border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        />
+        <Input
+          type="file"
+          id="image"
+          name="image"
+          accept="image/png, image/jpeg"
+          className="mt-1 w-full bg:red text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border file:border-gray-300 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100"
+          label={{ className: "text-sm font-medium text-gray-700" }}
+        />
+        <Input
+          isTextarea
+          name="content"
+          className="w-full bg-white rounded-sm border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          rows={5}
+        />
         {Array.isArray(error?.message) && (
           <ul>
             {error.message.map((error, idx) => (
@@ -65,13 +47,7 @@ export default function AddArticleForm() {
         {typeof error?.message === "string" && (
           <p className="text-red-500">{error.message}</p>
         )}
-        <button
-          type="submit"
-          disabled={isPending}
-          className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-        >
-          Create post
-        </button>
+        <Button type="submit">Create post</Button>
         {isPending && <p>Creating post...</p>}
       </form>
     </section>
