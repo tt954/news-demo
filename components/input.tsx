@@ -4,66 +4,46 @@ interface LabelProps extends ComponentPropsWithoutRef<"label"> {
   htmlFor: string;
 }
 
-type InputComponentType = "input" | "textarea";
-
 interface BaseInputProps {
   name: string;
   label?: Omit<LabelProps, "htmlFor">;
-  type?: InputComponentType;
+  isTextarea?: boolean;
 }
 
-type InputProps<T extends InputComponentType = "input"> = T extends "textarea"
-  ? ComponentPropsWithRef<"textarea"> & BaseInputProps
-  : ComponentPropsWithRef<"input"> & BaseInputProps;
+type InputProps =
+  | (BaseInputProps & { isTextarea?: false } & ComponentPropsWithRef<"input">)
+  | (BaseInputProps & { isTextarea: true } & ComponentPropsWithRef<"textarea">);
 
 const Label = ({ children, htmlFor, ...props }: LabelProps) => {
   return (
     <label
       {...props}
       htmlFor={htmlFor}
-      className={`font-medium text-gray-700 capitalize ${props.className}`}
+      className={`font-medium text-gray-700 capitalize mb-2 ${props.className}`}
     >
       {children}
     </label>
   );
 };
 
-const BasicInput = (props: ComponentPropsWithRef<"input">) => {
-  return (
-    <input
-      {...props}
-      className={`w-full bg-white rounded-sm border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${props.className}`}
-    />
-  );
-};
-
-const TextArea = (props: ComponentPropsWithRef<"textarea">) => {
-  return (
-    <textarea
-      {...props}
-      className={`w-full bg-white rounded-sm border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${props.className}`}
-    />
-  );
-};
-
-export default function Input<T extends InputComponentType>({
+export default function Input({
   name,
-  type = "input" as T,
+  isTextarea = false,
   ...props
-}: InputProps<T>) {
+}: InputProps) {
   return (
     <div className="form-control">
       {props.label?.children ? (
-        <Label {...props.label} htmlFor={name} className="mb-2" />
+        <Label {...props.label} htmlFor={name} />
       ) : (
-        <Label {...props.label} htmlFor={name} className="mb-2">
+        <Label {...props.label} htmlFor={name}>
           {name}
         </Label>
       )}
-      {type === "textarea" ? (
-        <TextArea {...(props as ComponentPropsWithRef<"textarea">)} id={name} />
+      {isTextarea ? (
+        <textarea {...(props as ComponentPropsWithRef<"textarea">)} id={name} />
       ) : (
-        <BasicInput {...(props as ComponentPropsWithRef<"input">)} id={name} />
+        <input {...(props as ComponentPropsWithRef<"input">)} id={name} />
       )}
     </div>
   );
