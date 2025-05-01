@@ -18,7 +18,7 @@ model Article {
   id        Int      @id @default(autoincrement())
   slug      String   @unique
   title     String
-  image     String
+  imageUrl  String
   date      DateTime
   text      String
   createdAt DateTime @default(now())
