@@ -2,7 +2,7 @@ export interface Article {
   id: number;
   slug: string;
   title: string;
-  image: string;
+  imageUrl: string;
   date: Date;
   text: string;
 }
