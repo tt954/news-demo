@@ -12,7 +12,7 @@ export default function ArticleList({ articles }: { articles: Article[] }) {
         >
           <Link href={`/news/${article.slug}`}>
             <Image
-              src={`${process.env.NEXT_PUBLIC_S3_DOMAIN}${article.imageUrl}`}
+              src={`${process.env.NEXT_PUBLIC_S3_URL}${article.imageUrl}`}
               alt={article.title}
               width={400}
               height={250}
