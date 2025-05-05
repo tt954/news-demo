@@ -32,7 +32,7 @@ export default function Input({
   ...props
 }: InputProps) {
   return (
-    <div className="form-control">
+    <>
       {props.label?.children ? (
         <Label {...props.label} htmlFor={name} />
       ) : (
@@ -45,6 +45,6 @@ export default function Input({
       ) : (
         <input {...(props as ComponentPropsWithRef<"input">)} id={name} />
       )}
-    </div>
+    </>
   );
 }

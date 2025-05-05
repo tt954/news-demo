@@ -16,7 +16,7 @@ export async function createPost(
 ): Promise<ActionResponse> {
   try {
     const title = formData.get("title") as string;
-    const image = formData.get("image") as File; // usually a binary blob, next.js automatically parses to File
+    const image = formData.get("feature-image") as File; // usually a binary blob, next.js automatically parses to File
     const content = formData.get("content") as string;
     const slug = slugify(title, { lower: true });
 
