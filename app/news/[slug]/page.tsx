@@ -12,7 +12,7 @@ export default async function Article({
   return (
     <article className="mx-8 leading-relaxed">
       <Image
-        src={`${process.env.NEXT_PUBLIC_S3_URL}${article.imageUrl}`}
+        src={`${process.env.AWS_S3_URL}${article.imageUrl}`}
         alt={article.title}
         width={300}
         height={200}

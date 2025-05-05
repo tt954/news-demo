@@ -16,7 +16,7 @@ export default function ArticleList({ articles }: { articles: Article[] }) {
           >
             <div className="relative aspect-video overflow-hidden">
               <Image
-                src={`${process.env.NEXT_PUBLIC_S3_URL}${article.imageUrl}`}
+                src={`${process.env.AWS_S3_URL}${article.imageUrl}`}
                 alt={article.title}
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
