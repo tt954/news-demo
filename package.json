@@ -12,6 +12,7 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.802.0",
     "@prisma/client": "^6.6.0",
     "@tailwindcss/postcss": "^4.1.4",
     "next": "^15.3.1",
