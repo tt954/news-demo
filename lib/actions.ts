@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import slugify from "slugify";
-import { uploadImageToS3 } from "./aws-s3-utils";
+import { uploadImageToS3 } from "@/lib/aws-s3";
 
 interface ActionResponse {
   success: boolean;
