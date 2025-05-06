@@ -1,22 +1,31 @@
 "use client";
 
-import Button from "@/components/button";
-import Input from "@/components/input";
+import { Button, Input, Label, Textarea } from "@/components/ui";
 import { createPost } from "@/lib/actions";
 import { ImageIcon, Loader2Icon, SendIcon } from "lucide-react";
 import Image from "next/image";
 import { ChangeEvent, useActionState, useState } from "react";
 
+const initialFormState = {
+  success: false,
+  message: "",
+};
+
 export default function AddArticleForm() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [error, formAction, isSubmitting] = useActionState(createPost, {});
+  const [error, formAction, isSubmitting] = useActionState(
+    createPost,
+    initialFormState
+  );
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const file = e.target.files?.[0] || null;
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => setImagePreview(reader.result as string);
       reader.readAsDataURL(file);
+    } else {
+      setImagePreview(null);
     }
   };
 
@@ -28,46 +37,41 @@ export default function AddArticleForm() {
       </div>
 
       <form className="space-y-6" action={formAction}>
-        <Input
-          name="title"
-          className="w-full bg-white rounded-sm border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-          placeholder="Enter post title"
-        />
-        <Input
-          isTextarea
-          name="excerpt"
-          className="resize-none w-full bg-white rounded-sm border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+        <Label htmlFor="title">Title</Label>
+        <Input placeholder="Enter post title" name="title" />
+
+        <Label htmlFor="excerpt">Excerpt</Label>
+        <Textarea
           placeholder="Brief summary of your post"
+          className="resize-none"
         />
-        <Input
-          isTextarea
+
+        <Label htmlFor="content">Content</Label>
+        <Textarea
           name="content"
-          className="w-full bg-white rounded-sm border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           placeholder="Write your post content here..."
-          rows={5}
+          className="min-h-[300px]"
         />
 
         <div className="space-y-3">
-          <label htmlFor="featured-image">Featured Image</label>
+          <Label htmlFor="featured-image">Featured Image</Label>
           <div className="flex items-center gap-4">
-            <Input
-              type="file"
-              id="feature-image"
-              name="featured-image"
-              accept="image/png, image/jpeg"
-              onChange={handleImageChange}
-              className="sr-only"
-              label={{
-                className:
-                  "flex h-32 w-32 cursor-pointer flex-col items-center justify-center rounded-md border border-dashed text-sm text-muted-background hover:bg-muted/50",
-                children: (
-                  <>
-                    <ImageIcon className="mb-2 h-8 w-8" />
-                    <span>Upload image</span>
-                  </>
-                ),
-              }}
-            />
+            <Label
+              htmlFor="featured-image"
+              className="flex h-32 w-32 cursor-pointer flex-col items-center justify-center rounded-md border border-dashed text-sm text-muted-background hover:bg-muted/50"
+            >
+              <ImageIcon className="mb-2 h-8 w-8" />
+              <span>Upload image</span>
+              <Input
+                type="file"
+                id="featured-image"
+                name="featured-image"
+                accept="image/png, image/jpeg"
+                onChange={(e) => handleImageChange(e)}
+                className="sr-only"
+              />
+            </Label>
+
             {imagePreview && (
               <div className="relative h-32 w-32 overflow-hidden rounded-md border">
                 <Image

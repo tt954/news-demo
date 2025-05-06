@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import slugify from "slugify";
-import { uploadImageToS3 } from "./aws-s3-utils";
+import { uploadImageToS3 } from "@/lib/aws-s3";
 
 interface ActionResponse {
   success: boolean;
@@ -16,8 +16,9 @@ export async function createPost(
 ): Promise<ActionResponse> {
   try {
     const title = formData.get("title") as string;
-    const image = formData.get("feature-image") as File; // usually a binary blob, next.js automatically parses to File
+    const image = formData.get("featured-image") as File; // usually a binary blob, next.js automatically parses to File
     const content = formData.get("content") as string;
+
     const slug = slugify(title, { lower: true });
 
     /* START validate form data */
