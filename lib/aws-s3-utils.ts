@@ -10,19 +10,18 @@ export const s3Client = new S3Client({
 
 export async function uploadImageToS3(
   imageBuffer: Buffer,
-  imageName: string,
+  imagePath: string,
   contentType: string
 ): Promise<string> {
   try {
     const command = new PutObjectCommand({
       Bucket: process.env.AWS_S3_BUCKET_NAME,
-      Key: imageName,
+      Key: imagePath,
       Body: imageBuffer,
       ContentType: contentType,
-      ACL: "public-read",
     });
     await s3Client.send(command);
-    return `https://${process.env.AWS_S3_URL}/${imageName}`;
+    return imagePath;
   } catch (error) {
     console.error("Error uploading image to S3:", error);
     throw new Error("Failed to upload image to S3");
