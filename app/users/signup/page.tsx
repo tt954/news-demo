@@ -16,8 +16,8 @@ export default function SignUpPage() {
   const [state, formAction, isSubmitting] = useActionState(signup, null);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen flex justify-center">
+      <Card className="w-full max-w-md h-max">
         <CardHeader className="space-y-1 text-center">
           <CardTitle className="text-2xl font-bold">
             Create an account
@@ -55,7 +55,7 @@ export default function SignUpPage() {
             </div>
           </CardContent>
 
-          <CardFooter>
+          <CardFooter className="mt-8">
             <Button className="w-full">Create account</Button>
           </CardFooter>
         </form>
