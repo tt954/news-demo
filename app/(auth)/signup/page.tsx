@@ -1,6 +1,6 @@
 "use client";
 
-import { signup } from "@/actions/auth";
+import { signup } from "@/app/(auth)/actions";
 import { Input, Label, Button } from "@/components/ui";
 import {
   Card,
@@ -10,13 +10,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Link from "next/link";
 import { useActionState } from "react";
 
 export default function SignUpPage() {
-  const [state, formAction, isSubmitting] = useActionState(signup, null);
+  const [errors, formAction, isSubmitting] = useActionState(signup, null);
 
   return (
-    <div className="min-h-screen flex justify-center">
+    <div className="min-h-screen flex flex-col items-center justify-center">
       <Card className="w-full max-w-md h-max">
         <CardHeader className="space-y-1 text-center">
           <CardTitle className="text-2xl font-bold">
@@ -42,30 +43,30 @@ export default function SignUpPage() {
                 type="email"
                 required
               />
-              {state?.errors && state?.errors?.email && (
-                <p className="text-red-500">{state.errors.email}</p>
-              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <Input id="password" name="password" type="password" required />
-              {state?.errors && state?.errors?.password && (
-                <p className="text-red-500">{state.errors.password}</p>
-              )}
             </div>
+
+            {errors?.message && (
+              <p className="text-red-500">{errors.message}</p>
+            )}
           </CardContent>
 
           <CardFooter className="mt-8">
-            <Button className="w-full">Create account</Button>
+            <Button className="w-full" disabled={isSubmitting}>
+              Create account
+            </Button>
           </CardFooter>
         </form>
-        {/* <div className="px-8 pb-6 text-center text-sm">
-            Already have an account?{" "}
-            <Link href="/login" className="text-primary underline">
-              Sign in
-            </Link>
-          </div> */}
       </Card>
+      <div className="mt-8 pb-6 text-center text-sm">
+        Already have an account?{" "}
+        <Link href="/login" className="text-primary underline">
+          Log in
+        </Link>
+      </div>
     </div>
   );
 }
