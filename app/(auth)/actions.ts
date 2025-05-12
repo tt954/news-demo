@@ -69,15 +69,14 @@ export async function login(prevState: unknown, formData: FormData) {
     return { message: "An account does not exist with this email" };
   }
 
-  const passwordHash = await hashPassword(password);
-  const isValidPassword = await verifyPasswordHash(passwordHash, user.password);
+  const isValidPassword = await verifyPasswordHash(user.password, password);
   if (!isValidPassword) {
     return { message: "Invalid password. Try again" };
   }
 
   const sessionToken = generateSessionToken();
   const session = await createSession(sessionToken, user.id);
-  setSessionTokenCookie(sessionToken, session.expiresAt);
+  await setSessionTokenCookie(sessionToken, session.expiresAt);
 
   return redirect("/create");
 }
@@ -85,9 +84,9 @@ export async function login(prevState: unknown, formData: FormData) {
 export async function logout() {
   const { session } = await getCurrentSession();
   if (session === null) {
-    return { message: "Not logged in" };
+    return redirect("/");
   }
-  invalidateSession(session.id);
-  deleteSessionTokenCookie();
+  await invalidateSession(session.id);
+  await deleteSessionTokenCookie();
   return redirect("/");
 }

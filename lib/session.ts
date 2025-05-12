@@ -7,6 +7,7 @@ import {
 } from "@oslojs/encoding";
 import { sha256 } from "@oslojs/crypto/sha2";
 import { cookies } from "next/headers";
+import { cache } from "react";
 
 const THIRTY_DAYS = 1000 * 60 * 60 * 24 * 30;
 const FIFTEEN_DAYS = 1000 * 60 * 60 * 24 * 15;
@@ -71,16 +72,13 @@ export async function invalidateAllSessions(userId: number): Promise<void> {
   await prisma.session.deleteMany({ where: { userId } });
 }
 
-export type SessionValidationResult =
-  | { session: Session; user: User }
-  | { session: null; user: null };
-
 export async function setSessionTokenCookie(token: string, expiresAt: Date) {
   const cookieStore = await cookies();
   cookieStore.set("session", token, {
     httpOnly: true,
     path: "/",
     secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
     expires: expiresAt,
   });
 }
@@ -95,3 +93,17 @@ export async function deleteSessionTokenCookie() {
     maxAge: 0,
   });
 }
+
+export const getCurrentSession = cache(
+  async (): Promise<SessionValidationResult> => {
+    const token = (await cookies()).get("session")?.value ?? null;
+    if (token == null) {
+      return { session: null, user: null };
+    }
+    return await validateSessionToken(token);
+  }
+);
+
+export type SessionValidationResult =
+  | { session: Session; user: User }
+  | { session: null; user: null };
