@@ -3,7 +3,10 @@
 import { hashPassword, verifyPasswordHash } from "@/lib/password";
 import {
   createSession,
+  deleteSessionTokenCookie,
   generateSessionToken,
+  getCurrentSession,
+  invalidateSession,
   setSessionTokenCookie,
 } from "@/lib/session";
 import { createUser, getUserByEmail } from "@/lib/user";
@@ -77,4 +80,14 @@ export async function login(prevState: unknown, formData: FormData) {
   setSessionTokenCookie(sessionToken, session.expiresAt);
 
   return redirect("/create");
+}
+
+export async function logout() {
+  const { session } = await getCurrentSession();
+  if (session === null) {
+    return { message: "Not logged in" };
+  }
+  invalidateSession(session.id);
+  deleteSessionTokenCookie();
+  return redirect("/");
 }
